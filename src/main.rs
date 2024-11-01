@@ -1,3 +1,8 @@
+/* 
+[CORRECTION GPIO] (Don't hesitate to remove this part)
+You should not use an external HAL (as avr_device).
+We are working in a no-std environnment (you should add ```#![no_std]``` at the beginning)
+*/
 // src/main.rs
 
 mod gpio;
