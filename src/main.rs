@@ -1,28 +1,32 @@
-/* 
-[CORRECTION GPIO] (Don't hesitate to remove this part)
-You should not use an external HAL (as avr_device).
-We are working in a no-std environnment (you should add ```#![no_std]``` at the beginning)
-*/
-// src/main.rs
+#![no_std]
+#![no_main]
 
-mod gpio;
-use gpio::{Pin, PinMode};
+mod usart;
+use usart::Usart;
 
-fn main() {
-    // Create an instance of Pin 2 (corresponding to Arduino digital pin 2)
-    let pin2 = Pin::<2>::new();
+use core::panic::PanicInfo;
 
-    // Configure pin2 as input and read its value
-    pin2.configure(PinMode::Input);
-    let pin_value = pin2.read();
-    println!("Pin 2 is {}", if pin_value { "HIGH" } else { "LOW" });
+#[no_mangle]
+pub extern "C" fn main() -> ! {
+    // Initialize USART with a common baud rate (9600 in this case)
+    Usart::init(103); // 9600 baud rate for 16MHz clock
 
-    // Configure pin2 as output and set it to HIGH
-    pin2.configure(PinMode::Output);
-    pin2.write(true);
-    println!("Set Pin 2 to HIGH");
+    // Transmit a byte
+    Usart::transmit(b'H');
+    Usart::transmit(b'e');
+    Usart::transmit(b'l');
+    Usart::transmit(b'l');
+    Usart::transmit(b'o');
 
-    // Set pin2 to LOW
-    pin2.write(false);
-    println!("Set Pin 2 to LOW");
+    // Receive a byte and transmit it back (echo functionality)
+    let received = Usart::receive();
+    Usart::transmit(received);
+
+    loop {}
 }
+
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+    loop {}
+}
+
