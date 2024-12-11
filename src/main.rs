@@ -1,3 +1,7 @@
+/*
+[CORRECTION USART] (Don't hesitate to remove this comment)
+Where is your second target?
+*/
 #![no_std]
 #![no_main]
 
