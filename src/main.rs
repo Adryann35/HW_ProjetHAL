@@ -1,6 +1,11 @@
 /*
 [CORRECTION USART] (Don't hesitate to remove this comment)
 Where is your second target?
+
+
+[CORRECTION SPI] (Don't hesitate to remove this comment)
+You didn't implement the reception part of the SPI feature for your ATMEGA328P target.
+You should implement the peripheral/slave mode as well (not only the controler/master mode) for your CORTEX M7 target.
 */
 #![no_std]
 #![no_main]
